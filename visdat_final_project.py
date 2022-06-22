@@ -14,7 +14,7 @@ from bokeh.io import curdoc
 from bokeh.plotting import figure
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import CategoricalColorMapper
-from bokeh.palettes import Spectral6
+from bokeh.palettes import Spectral6,Colorblind8
 from bokeh.layouts import widgetbox, row, gridplot
 from bokeh.models import Slider, Select
 from bokeh.io import show
@@ -85,7 +85,7 @@ data
 # Make a list of the unique values from the region column: regions_list
 island_list = data.province.unique().tolist()
 
-color_mapper = CategoricalColorMapper(factors=island_list, palette=Spectral6)
+color_mapper = CategoricalColorMapper(factors=island_list, palette=Colorblind8)
 
 source = ColumnDataSource(data={
     'x'    : data[data['island'] == 'Jawa']['date'],
