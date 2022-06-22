@@ -88,7 +88,7 @@ island_list = data.island.unique().tolist()
 color_mapper = CategoricalColorMapper(factors=island_list, palette=Spectral6)
 
 source = ColumnDataSource(data={
-    'x'    : data[data['location'] == 'DKI Jakarta']['total_deaths'],
+    'x'    : data[data['location'] == 'DKI Jakarta']['date'],
     "y"     : data[data['location'] == 'DKI Jakarta']['total_cases'],
     "loc" : data[data['location'] == 'DKI Jakarta']['location'],
     "pop" : data[data['location'] == 'DKI Jakarta']['population'],
@@ -132,7 +132,7 @@ def update_plot(attr, old, new):
     'island'  : data.loc[yr].island,
 
     }
-    source.df = new_data
+    source.data = new_data
     
     # Add title to figure: plot.title.text
     plot.title.text = 'Covid-19 data for %d' % yr
