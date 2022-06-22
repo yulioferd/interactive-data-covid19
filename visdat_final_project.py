@@ -92,7 +92,7 @@ source = ColumnDataSource(data={
     "y"     : data[data['date'] == '2020-03-01']['total_cases'],
     "loc" : data[data['date'] == '2020-03-01']['location'],
     "pop" : data[data['date'] == '2020-03-01']['population'],
-    "is" : data[data['date'] == '2020-03-01']['island'],
+    "island" : data[data['date'] == '2020-03-01']['island'],
 })
 
 # source = ColumnDataSource(data={
