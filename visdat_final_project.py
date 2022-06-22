@@ -89,11 +89,11 @@ island_list = data.island.unique().tolist()
 color_mapper = CategoricalColorMapper(factors=province_list, palette=Spectral6)
 
 source = ColumnDataSource(data={
-    'x'    : data[data['island'] == 'Jawa']['date'],
-    "y"     : data[data['island'] == 'Jawa']['total_cases'],
-    "province" : data[data['island'] == 'Jawa']['province'],
-    "pop" : data[data['island'] == 'Jawa']['population'],
-    "island" : data[data['island'] == 'Jawa']['island'],
+    'x'    : data[data['island'] == 'Jawa'].date,
+    "y"     : data[data['island'] == 'Jawa'].total_cases,
+    "province" : data[data['island'] == 'Jawa'].province,
+    "pop" : data[data['island'] == 'Jawa'].population,
+    "island" : data[data['island'] == 'Jawa'].island,
 })
 
 # source = ColumnDataSource(data={
@@ -125,11 +125,11 @@ def update_plot(attr, old, new):
     plot.yaxis.axis_label = 'y'
     # new data
     new_data = {
-    'x'             : data.loc[data['island'] == x_island]['date'],
-    'y'             : data.loc[data['island'] == x_island]['total_cases'],
-    'province'      : data.loc[data['island'] == x_island]['province'],
-    'pop'           : data.loc[data['island'] == x_island]['population'],
-    'island'        : data.loc[data['island'] == x_island]['island'],
+    'x'             : data.loc[data['island'] == x_island].date,
+    'y'             : data.loc[data['island'] == x_island].total_cases,
+    'province'      : data.loc[data['island'] == x_island].province,
+    'pop'           : data.loc[data['island'] == x_island].population,
+    'island'        : data.loc[data['island'] == x_island].island,
 
     }
     source.data = new_data
@@ -145,8 +145,8 @@ def update_plot(attr, old, new):
 # Create a dropdown Select widget for the x data: x_select
 select_island = Select(
     options=island_list,
-    value='total_deaths',
-    title='x-axis data'
+    value='Jawa',
+    title='Pulau Indonesia'
 )
 
 # Attach the update_plot callback to the 'value' property of x_select
