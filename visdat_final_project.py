@@ -123,11 +123,11 @@ def update_plot(attr, old, new):
     plot.yaxis.axis_label = 'y'
     # new data
     new_data = {
-    'x'             : data.loc[data['island'] == x_island][date],
-    'y'             : data.loc[data['island'] == x_island][total_cases],
-    'province'      : data.loc[data['island'] == x_island][province],
-    'pop'           : data.loc[data['island'] == x_island][population],
-    'island'        : data.loc[data['island'] == x_island][island],
+    'x'             : data.loc[data['island'] == x_island]['date'],
+    'y'             : data.loc[data['island'] == x_island]['total_cases'],
+    'province'      : data.loc[data['island'] == x_island]['province'],
+    'pop'           : data.loc[data['island'] == x_island]['population'],
+    'island'        : data.loc[data['island'] == x_island]['island'],
 
     }
     source.data = new_data
