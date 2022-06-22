@@ -105,7 +105,7 @@ source = ColumnDataSource(data={
 
 # Create the figure: plotFertility (children per woman)
 plot = figure(title='Covid-19 Indonesia', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
-           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='@y')])
+           plot_height=700, plot_width=1000, tools=[HoverTool(tooltips='@y')])
 
 # Add a circle glyph to the figure p
 plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
