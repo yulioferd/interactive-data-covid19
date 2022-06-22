@@ -103,7 +103,7 @@ source = ColumnDataSource(data={
 # })
 
 # Create the figure: plotFertility (children per woman)
-plot = figure(title='Covid-19 Indonesia', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
+plot = figure(title='Covid-19 Indonesia', x_axis_label='Date', y_axis_label='Total Kasus',
            plot_height=700, plot_width=1000, tools=[HoverTool(tooltips='@y')])
 
 # Add a circle glyph to the figure p
@@ -117,24 +117,23 @@ plot.legend.location = 'top_left'
 def update_plot(attr, old, new):
     # set the `yr` name to `slider.value` and `source.data = new_data`
     # yr = slider.value
-    x = x_select.value
-    y = y_select.value
+    x_island = select_island.value
     # Label axes of plot
-    plot.xaxis.axis_label = x
-    plot.yaxis.axis_label = y
+    plot.xaxis.axis_label = 'x'
+    plot.yaxis.axis_label = 'y'
     # new data
     new_data = {
-    'x'             : data.loc[x],
-    'y'             : data.loc[y],
-    'province'      : data.loc.province,
-    'population'    : data.loc.population,
-    'island'        : data.loc.island,
+    'x'             : data.loc[data['island'] == x_island][date],
+    'y'             : data.loc[data['island'] == x_island][total_cases],
+    'province'      : data.loc[data['island'] == x_island][province],
+    'pop'           : data.loc[data['island'] == x_island][population],
+    'island'        : data.loc[data['island'] == x_island][island],
 
     }
     source.data = new_data
     
     # Add title to figure: plot.title.text
-    plot.title.text = 'Covid-19 data'
+    plot.title.text = 'Covid-19 data' % x_island
 
 # Make a slider object: slider
 # slider = Slider(start=1970, end=2022, step=1, value=1970, title='Year')
@@ -142,27 +141,27 @@ def update_plot(attr, old, new):
 
 # Make dropdown menu for x and y axis
 # Create a dropdown Select widget for the x data: x_select
-x_select = Select(
-    options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
+select_island = Select(
+    options=island_list,
     value='total_deaths',
     title='x-axis data'
 )
 
 # Attach the update_plot callback to the 'value' property of x_select
-x_select.on_change('value', update_plot)
+select_island.on_change('value', update_plot)
 
 # Create a dropdown Select widget for the y data: y_select
-y_select = Select(
-    options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
-    value='total_cases',
-    title='y-axis data'
-)
+# y_select = Select(
+#     options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
+#     value='total_cases',
+#     title='y-axis data'
+# )
 
 # Attach the update_plot callback to the 'value' property of y_select
-y_select.on_change('value', update_plot)
+# y_select.on_change('value', update_plot)
 
 # Create layout and add to current document
-layout = row(widgetbox(x_select, y_select), plot)
+layout = row(widgetbox(select_island), plot)
 curdoc().add_root(layout)
 
 # from bokeh.io import show
