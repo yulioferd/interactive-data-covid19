@@ -38,8 +38,6 @@ from bokeh.layouts import row,column,gridplot,widgetbox
 from bokeh.models.widgets import Tabs,Panel
 output_notebook()
 
-from google.colab import files
-files.upload()
 
 data = pd.read_csv("covid_19_indonesia_time_series_all.csv")
 data.info()
@@ -89,11 +87,11 @@ data["DateString"] = data["date"].dt.strftime("%Y%m%d")
 
 data['DateString'] = data['DateString'].astype(float)
 
-data.head()
+# data.head()
 
 data.set_index('DateString', inplace=True)
 
-data.info()
+# data.info()
 
 data = data.loc[:,['date','location','total_cases','total_deaths','province','population','island','continent','new_cases','new_deaths','total_active_cases']]
 
@@ -137,8 +135,8 @@ def update_plot(attr, old, new):
     x_island = select_island.value
     # y = y_select.value
     # Label axes of plot
-    plot.xaxis.axis_label = 'x'
-    plot.yaxis.axis_label = 'y'
+    # plot.xaxis.axis_label = 'x'
+    # plot.yaxis.axis_label = 'y'
     # new data
     new_data = {
     'x'             : data.loc[data['island'] == x_island].date,
