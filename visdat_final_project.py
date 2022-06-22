@@ -83,16 +83,16 @@ data.info()
 data
 
 # Make a list of the unique values from the region column: regions_list
-island_list = data.island.unique().tolist()
+island_list = data.province.unique().tolist()
 
 color_mapper = CategoricalColorMapper(factors=island_list, palette=Spectral6)
 
 source = ColumnDataSource(data={
-    'x'    : data[data['location'] == 'DKI Jakarta']['date'],
-    "y"     : data[data['location'] == 'DKI Jakarta']['total_cases'],
-    "loc" : data[data['location'] == 'DKI Jakarta']['location'],
-    "pop" : data[data['location'] == 'DKI Jakarta']['population'],
-    "island" : data[data['location'] == 'DKI Jakarta']['island'],
+    'x'    : data[data['island'] == 'Jawa']['date'],
+    "y"     : data[data['island'] == 'Jawa']['total_cases'],
+    "loc" : data[data['island'] == 'Jawa']['province'],
+    "pop" : data[data['island'] == 'Jawa']['population'],
+    "island" : data[data['island'] == 'Jawa']['island'],
 })
 
 # source = ColumnDataSource(data={
@@ -109,7 +109,7 @@ plot = figure(title='Covid-19 Indonesia', x_axis_label='Total Kematian', y_axis_
 
 # Add a circle glyph to the figure p
 plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
-           color=dict(field='island', transform=color_mapper), legend='island')
+           color=dict(field='province', transform=color_mapper), legend='province')
 
 # Set the legend and axis attributes
 plot.legend.location = 'bottom_left'
@@ -127,7 +127,7 @@ def update_plot(attr, old, new):
     new_data = {
     'x'             : data.loc[x],
     'y'             : data.loc[y],
-    'location'      : data.loc.location,
+    'province'      : data.loc.province,
     'population'    : data.loc.population,
     'island'        : data.loc.island,
 
