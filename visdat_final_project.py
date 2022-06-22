@@ -73,7 +73,8 @@ data.set_index('DateString', inplace=True)
 
 data.info()
 
-data = data.loc[:,['date','location','total_cases','total_deaths','province','population','island','continent','new_cases','new_deaths','total_active_cases','country']]
+data = data.loc[:,['date','location','total_cases','total_deaths','province','population','island','continent','new_cases','new_deaths','total_active_cases']]
+
 data.head()
 
 data.dropna(how="any",inplace = True)
@@ -87,11 +88,11 @@ island_list = data.island.unique().tolist()
 color_mapper = CategoricalColorMapper(factors=island_list, palette=Spectral6)
 
 source = ColumnDataSource(data={
-    'x'    : data[data['country'] == 'Indonesia']['date'],
-    "y"     : data[data['country'] == 'Indonesia']['total_cases'],
-    "loc" : data[data['country'] == 'Indonesia']['location'],
-    "pop" : data[data['country'] == 'Indonesia']['population'],
-    "island" : data[data['country'] == 'Indonesia']['island'],
+    'x'    : data[data['location'] == 'DKI Jakarta']['date'],
+    "y"     : data[data['location'] == 'DKI Jakarta']['total_cases'],
+    "loc" : data[data['location'] == 'DKI Jakarta']['location'],
+    "pop" : data[data['location'] == 'DKI Jakarta']['population'],
+    "island" : data[data['location'] == 'DKI Jakarta']['island'],
 })
 
 # source = ColumnDataSource(data={
