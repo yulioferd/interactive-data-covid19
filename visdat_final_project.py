@@ -12,7 +12,6 @@ Original file is located at
 from bokeh.plotting import figure
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import CategoricalColorMapper
-from bokeh.palettes import Spectral6
 from bokeh.palettes import Spectral6,Colorblind8
 from bokeh.layouts import widgetbox, row, gridplot
 from bokeh.models import Slider, Select
@@ -92,7 +91,6 @@ island_list
 color_mapper = CategoricalColorMapper(factors=province_list, palette=Colorblind8)
 
 source = ColumnDataSource(data={
-    # 'x'       : data.loc[1970].fertility,
     "x"                : data.loc[data['island'] == 'Sumatera'].date,
     "y"                : data.loc[data['island'] == 'Sumatera'].total_cases,
     "province"         : data.loc[data['island'] == 'Sumatera'].province,
@@ -155,4 +153,4 @@ select_island.on_change('value', update_plot)
 layout = row(widgetbox(select_island), plot)
 curdoc().add_root(layout)
 
-# show(layout)
+show(layout)
