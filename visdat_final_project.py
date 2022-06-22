@@ -38,8 +38,6 @@ from bokeh.layouts import row,column,gridplot,widgetbox
 from bokeh.models.widgets import Tabs,Panel
 output_notebook()
 
-!pip install bokeh
-
 from google.colab import files
 files.upload()
 
@@ -179,4 +177,4 @@ select_island.on_change('value', update_plot)
 layout = row(widgetbox(select_island), plot)
 curdoc().add_root(layout)
 
-show(layout)
+# show(layout)
