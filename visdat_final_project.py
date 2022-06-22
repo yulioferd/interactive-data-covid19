@@ -105,7 +105,7 @@ source = ColumnDataSource(data={
 
 # Create the figure: plotFertility (children per woman)
 plot = figure(title='Covid-19 Indonesia', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
-           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='@loc')])
+           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='@y')])
 
 # Add a circle glyph to the figure p
 plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
@@ -117,7 +117,7 @@ plot.legend.location = 'bottom_left'
 # Define the callback function: update_plot
 def update_plot(attr, old, new):
     # set the `yr` name to `slider.value` and `source.data = new_data`
-    yr = slider.value
+    # yr = slider.value
     x = x_select.value
     y = y_select.value
     # Label axes of plot
@@ -125,21 +125,21 @@ def update_plot(attr, old, new):
     plot.yaxis.axis_label = y
     # new data
     new_data = {
-    'x'       : data.loc[yr][x],
-    'y'       : data.loc[yr][y],
-    'location': data.loc[yr].location,
-    'population'  : data.loc[yr].population,
-    'island'  : data.loc[yr].island,
+    'x'             : data.loc[x],
+    'y'             : data.loc[y],
+    'location'      : data.loc.location,
+    'population'    : data.loc.population,
+    'island'        : data.loc.island,
 
     }
     source.data = new_data
     
     # Add title to figure: plot.title.text
-    plot.title.text = 'Covid-19 data for %d' % yr
+    plot.title.text = 'Covid-19 data'
 
 # Make a slider object: slider
-slider = Slider(start=1970, end=2022, step=1, value=1970, title='Year')
-slider.on_change('value',update_plot)
+# slider = Slider(start=1970, end=2022, step=1, value=1970, title='Year')
+# slider.on_change('value',update_plot)
 
 # Make dropdown menu for x and y axis
 # Create a dropdown Select widget for the x data: x_select
@@ -163,7 +163,7 @@ y_select = Select(
 y_select.on_change('value', update_plot)
 
 # Create layout and add to current document
-layout = row(widgetbox(slider, x_select, y_select), plot)
+layout = row(widgetbox(x_select, y_select), plot)
 curdoc().add_root(layout)
 
 # from bokeh.io import show
