@@ -82,9 +82,11 @@ data.info()
 data
 
 # Make a list of the unique values from the region column: regions_list
-island_list = data.province.unique().tolist()
+province_list = data.province.unique().tolist()
+island_list = data.island.unique().tolist()
 
-color_mapper = CategoricalColorMapper(factors=island_list, palette=Spectral6)
+
+color_mapper = CategoricalColorMapper(factors=province_list, palette=Spectral6)
 
 source = ColumnDataSource(data={
     'x'    : data[data['island'] == 'Jawa']['date'],
