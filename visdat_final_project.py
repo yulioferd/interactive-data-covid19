@@ -9,34 +9,14 @@ Original file is located at
 ### LIBRARIES
 """
 
-import os
-import numpy as np
-import pandas as pd
-import random
-import seaborn as sns
-
-import datetime as datetime
-import matplotlib.dates as dates
-import matplotlib.pyplot as plt
-import plotly.express as px
-import plotly.graph_objs as go
-
-import pandas as pd
-from bokeh.io import curdoc,show,output_file,show,output_notebook,push_notebook
 from bokeh.plotting import figure
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import CategoricalColorMapper
-from bokeh.palettes import Spectral6,Viridis10,Colorblind8
+from bokeh.palettes import Spectral6
+from bokeh.palettes import Spectral6,Colorblind8
 from bokeh.layouts import widgetbox, row, gridplot
 from bokeh.models import Slider, Select
-from bokeh.io import output_notebook
-
-from bokeh.io import output_file,show,output_notebook,push_notebook
-from bokeh.plotting import *
-from bokeh.models import ColumnDataSource,HoverTool,CategoricalColorMapper
-from bokeh.layouts import row,column,gridplot,widgetbox
-from bokeh.models.widgets import Tabs,Panel
-output_notebook()
+from bokeh.io import show
 
 
 data = pd.read_csv("covid_19_indonesia_time_series_all.csv")
@@ -135,8 +115,8 @@ def update_plot(attr, old, new):
     x_island = select_island.value
     # y = y_select.value
     # Label axes of plot
-    # plot.xaxis.axis_label = 'x'
-    # plot.yaxis.axis_label = 'y'
+    plot.xaxis.axis_label = 'x'
+    plot.yaxis.axis_label = 'y'
     # new data
     new_data = {
     'x'             : data.loc[data['island'] == x_island].date,
