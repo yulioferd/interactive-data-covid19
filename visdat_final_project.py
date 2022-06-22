@@ -137,11 +137,6 @@ def update_plot(attr, old, new):
     # Add title to figure: plot.title.text
     plot.title.text = 'Covid-19 data for %d' % yr
 
-p = figure(x_range=(0, 7), y_range=(0, 3), height=300, tools='save')
-
-# legend field matches the column in the source
-p.circle( x='x', y='y', radius=0.5, color='province', legend_field='Island', source=source)
-
 # Make a slider object: slider
 slider = Slider(start=1970, end=2022, step=1, value=1970, title='Year')
 slider.on_change('value',update_plot)
