@@ -90,7 +90,7 @@ color_mapper = CategoricalColorMapper(factors=island_list, palette=Spectral6)
 source = ColumnDataSource(data={
     'x'    : data[data['island'] == 'Jawa']['date'],
     "y"     : data[data['island'] == 'Jawa']['total_cases'],
-    "loc" : data[data['island'] == 'Jawa']['province'],
+    "province" : data[data['island'] == 'Jawa']['province'],
     "pop" : data[data['island'] == 'Jawa']['population'],
     "island" : data[data['island'] == 'Jawa']['island'],
 })
@@ -112,7 +112,7 @@ plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
            color=dict(field='province', transform=color_mapper), legend='province')
 
 # Set the legend and axis attributes
-plot.legend.location = 'bottom_left'
+plot.legend.province = 'bottom_left'
 
 # Define the callback function: update_plot
 def update_plot(attr, old, new):
