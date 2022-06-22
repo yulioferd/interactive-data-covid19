@@ -88,11 +88,11 @@ island_list = data.island.unique().tolist()
 color_mapper = CategoricalColorMapper(factors=island_list, palette=Spectral6)
 
 source = ColumnDataSource(data={
-    'x'    : data[data['date'] == '2020-03-01']['total_deaths'],
-    "y"     : data[data['date'] == '2020-03-01']['total_cases'],
-    "loc" : data[data['date'] == '2020-03-01']['location'],
-    "pop" : data[data['date'] == '2020-03-01']['population'],
-    "island" : data[data['date'] == '2020-03-01']['island'],
+    'x'    : data[data['location'] == 'DKI Jakarta']['total_deaths'],
+    "y"     : data[data['location'] == 'DKI Jakarta']['total_cases'],
+    "loc" : data[data['location'] == 'DKI Jakarta']['location'],
+    "pop" : data[data['location'] == 'DKI Jakarta']['population'],
+    "island" : data[data['location'] == 'DKI Jakarta']['island'],
 })
 
 # source = ColumnDataSource(data={
