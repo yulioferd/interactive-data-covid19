@@ -17,6 +17,7 @@ from bokeh.palettes import Spectral6,Colorblind8
 from bokeh.layouts import widgetbox, row, gridplot
 from bokeh.models import Slider, Select
 from bokeh.io import show
+
 data = pd.read_csv("covid_19_indonesia_time_series_all.csv")
 data.info()
 
@@ -63,7 +64,7 @@ data['date'] = pd.to_datetime(data['date'])
 
 data["island_unique"] = data["island"]
 
-data['DateString'] = data['DateString'].astype(float)
+# data['DateString'] = data['DateString'].astype(float)
 
 data.head()
 
