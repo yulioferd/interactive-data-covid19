@@ -110,7 +110,7 @@ plot.legend.location = 'top_left'
 
 def update_plot(attr, old, new):
     # set the `yr` name to `slider.value` and `source.data = new_data`
-    yr = slider.value
+    yr = 2020
     x = x_select.value
     y = y_select.value
     # Label axes of plot
@@ -130,8 +130,8 @@ def update_plot(attr, old, new):
     # Add title to figure: plot.title.text
     plot.title.text = 'Covid-19 data pulau %d' % yr
 
-slider = Slider(start=1970, end=2022, step=1, value=2020, title='Year')
-slider.on_change('value',update_plot)
+# slider = Slider(start=1970, end=2022, step=1, value=2020, title='Year')
+# slider.on_change('value',update_plot)
 
 # data.index.to_list()
 
@@ -171,7 +171,7 @@ y_select = Select(
 y_select.on_change('value', update_plot)
 
 # Create layout and add to current document
-layout = row(widgetbox(slider, x_select, y_select), plot)
+layout = row(widgetbox(x_select, y_select), plot)
 curdoc().add_root(layout)
 
 # show(layout)
