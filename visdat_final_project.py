@@ -72,23 +72,27 @@ data.dropna(how="any",inplace = True)
 
 island_list = data.island.unique().tolist()
 
+province_list = data.province.unique().tolist()
+
+
 color_mapper = CategoricalColorMapper(factors=island_list, palette=Colorblind8)
 
+color_mapper_2 = CategoricalColorMapper(factors=province_list, palette=Colorblind8)
+
+
 source = ColumnDataSource(data={
-    "x"                : data.loc[2020].date,
+    "x"                : data.loc[2020].total_death,
     "y"                : data.loc[2020].total_cases,
     "province"         : data.loc[2020].province,
     "pop"              : data.loc[2020].population,
     "island"           : data.loc[2020].island,
 })
 
-plot_1 = figure(title='Covid-19 Indonesia', x_axis_label='Date', y_axis_label='Total Kasus',
-           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='@x|@y|@province')])
+plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_axis_label='Total Kematia', y_axis_label='Total Kasus',
+           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kematian @x| Total Kasus @y | @province' )])
 
 plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
-           color=dict(field='island', transform=color_mapper), legend='island')
-
-plot_1.legend.location = 'top_left'
+           color=dict(field='province',transform=color_mapper_2))
 
 plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Kasus Baru dan Total Kasus setiap pulau', x_axis_label='Kasus Baru', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kasus @y')])
@@ -127,7 +131,7 @@ def update_plot(attr, old, new):
 x_select = Select(
     options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
     value='total_cases',
-    title='x-axis data'
+    title='Data axis X'
 )
 
 x_select.on_change('value', update_plot)
@@ -135,18 +139,14 @@ x_select.on_change('value', update_plot)
 y_select = Select(
     options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
     value='total_cases',
-    title='y-axis data'
+    title='Data axis Y'
 )
 
-# Attach the update_plot callback to the 'value' property of y_select
 y_select.on_change('value', update_plot)
 
-# Create layout and add to current document
-layout = row(widgetbox(x_select, y_select), plot_1)
-curdoc().add_root(layout)
 
-# Create layout and add to current document
 layout_2 =  plot_2
 curdoc().add_root(layout_2)
 
-# show(layout)
+layout = row(widgetbox(x_select, y_select), plot_1)
+curdoc().add_root(layout)
