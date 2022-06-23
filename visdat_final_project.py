@@ -159,7 +159,7 @@ def update_plot(attr, old, new):
     }
     source.data = new_data
     
-    plot_1.title.text = 'Covid-19 data pulau %d' % yr
+    plot_1.title.text = 'Covid-19 data provinsi %d' % yr
 
 
 x_select = Select(
