@@ -112,14 +112,14 @@ color_mapper_2 = CategoricalColorMapper(factors=province_list,
                                                '#F6CC1D'])
 
 source = ColumnDataSource(data={
-    "x"                : data.loc[2020].date,
+    "x"                : data.loc[2020].total_death,
     "y"                : data.loc[2020].total_cases,
     "province"         : data.loc[2020].province,
     "pop"              : data.loc[2020].population,
     "island"           : data.loc[2020].island,
 })
 
-plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_axis_label='Total Kematia', y_axis_label='Total Kasus',
+plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kematian @x| Total Kasus @y | @province' )])
 
 plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
