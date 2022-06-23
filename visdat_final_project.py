@@ -122,7 +122,7 @@ def update_plot(attr, old, new):
     'y'             : data.loc[yr][y],
     'province'      : data.loc[yr].province,
     'pop'           : data.loc[yr].population,
-    'island'        : data.loc[yr].island_unique,
+    'island'        : data.loc[yr].island,
 
     }
     source.data = new_data
