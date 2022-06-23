@@ -13,10 +13,9 @@ from bokeh.io import curdoc
 from bokeh.plotting import figure
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import CategoricalColorMapper
-from bokeh.palettes import Spectral6,Colorblind8
-from bokeh.layouts import widgetbox, row, gridplot
-from bokeh.models import Slider, Select
-from bokeh.io import show
+from bokeh.palettes import Colorblind8
+from bokeh.layouts import widgetbox, row
+from bokeh.models import  Select
 
 data = pd.read_csv("covid_19_indonesia_time_series_all.csv")
 data.info()
@@ -66,33 +65,67 @@ data['year'] = 2020
 
 data.set_index('year', inplace=True)
 
-data = data.loc[:,['date','location','total_cases','total_deaths','province','population','island','continent','new_cases','new_deaths','total_active_cases']]
+data = data.loc[:,['date','location','total_cases','total_deaths','island','province','population','continent','new_cases','new_deaths','total_active_cases']]
 
 data.dropna(how="any",inplace = True)
 
-island_list = data.island.unique().tolist()
-
 province_list = data.province.unique().tolist()
 
+island_list = data.island.unique().tolist()
 
 color_mapper = CategoricalColorMapper(factors=island_list, palette=Colorblind8)
 
-color_mapper_2 = CategoricalColorMapper(factors=province_list, palette=Colorblind8)
-
+color_mapper_2 = CategoricalColorMapper(factors=province_list, 
+                                      palette=['#440154', 
+                                               '#404387', 
+                                               '#29788E', 
+                                               '#22A784', 
+                                               '#79D151', 
+                                               '#FD0724',
+                                               '#37AB65', 
+                                               '#7C60A8', 
+                                               '#CF95D7', 
+                                               '#F6CC1D',
+                                               '#3DF735', 
+                                               '#AD6D70',
+                                               '#440154', 
+                                               '#404387', 
+                                               '#29788E', 
+                                               '#22A784', 
+                                               '#79D151', 
+                                               '#FD0724',
+                                               '#37AB65', 
+                                               '#7C60A8', 
+                                               '#CF95D7', 
+                                               '#F6CC1D',
+                                               '#3DF735', 
+                                               '#AD6D70',
+                                               '#440154', 
+                                               '#404387', 
+                                               '#29788E', 
+                                               '#22A784', 
+                                               '#79D151', 
+                                               '#FD0724',
+                                               '#37AB65', 
+                                               '#7C60A8', 
+                                               '#CF95D7', 
+                                               '#F6CC1D'])
 
 source = ColumnDataSource(data={
-    "x"                : data.loc[2020].total_death,
+    "x"                : data.loc[2020].date,
     "y"                : data.loc[2020].total_cases,
     "province"         : data.loc[2020].province,
     "pop"              : data.loc[2020].population,
     "island"           : data.loc[2020].island,
 })
 
-plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_axis_label='Total Kematia', y_axis_label='Total Kasus',
-           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kematian @x| Total Kasus @y | @province' )])
+plot_1 = figure(title='Covid-19 Indonesia', x_axis_label='Date', y_axis_label='Total Kasus',
+           plot_height=400, plot_width=1000, tools=[HoverTool(tooltips='@x|@y|@province')])
 
 plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
-           color=dict(field='province',transform=color_mapper_2))
+           color=dict(field='province', transform=color_mapper_2), legend='province')
+
+plot_1.add_layout(plot_1.legend[0], 'right')
 
 plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Kasus Baru dan Total Kasus setiap pulau', x_axis_label='Kasus Baru', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kasus @y')])
@@ -111,11 +144,14 @@ plot_2.legend.location = 'bottom_right'
 plot_2.legend.click_policy="hide"
 
 def update_plot(attr, old, new):
+    # set the `yr` name to `slider.value` and `source.data = new_data`
     yr = 2020
     x = x_select.value
     y = y_select.value
+    # Label axes of plot
     plot_1.xaxis.axis_label = x
     plot_1.yaxis.axis_label = y
+    # new data
     new_data = {
     'x'             : data.loc[yr][x],
     'y'             : data.loc[yr][y],
@@ -126,7 +162,9 @@ def update_plot(attr, old, new):
     }
     source.data = new_data
     
+    # Add title to figure: plot.title.text
     plot_1.title.text = 'Covid-19 data pulau %d' % yr
+
 
 x_select = Select(
     options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
