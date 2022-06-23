@@ -112,15 +112,16 @@ color_mapper_2 = CategoricalColorMapper(factors=province_list,
                                                '#F6CC1D'])
 
 source = ColumnDataSource(data={
-    "x"                : data.loc[2020].total_deaths,
-    "y"                : data.loc[2020].total_cases,
+    "x"                : data.loc[2020].new_deaths,
+    "y"                : data.loc[2020].new_cases,
     "province"         : data.loc[2020].province,
     "pop"              : data.loc[2020].population,
     "island"           : data.loc[2020].island,
+    "date"             : data.loc[2020].date
 })
 
-plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
-           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kematian @x| Total Kasus @y | @province' )])
+plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_axis_label='Kematian Baru', y_axis_label='Kasus Baru',
+           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Kematian Baru @x | Kasus Baru @y | @province' )])
 
 plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
            color=dict(field='province', transform=color_mapper_2))
@@ -129,7 +130,7 @@ plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
 # plot_1.legend.label_text_font_size = "5px"
 
 plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Total Kematian dan Total Kasus setiap pulau', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
-           plot_height=400, plot_width=1000, tools=[HoverTool(tooltips='Total Kasus @y')])
+           plot_height=400, plot_width=1000, tools=[HoverTool(tooltips='Total Kasus @y | @date')])
 
 
 # plot_1.legend.label_text_font_size = "5px"
@@ -146,8 +147,9 @@ for reg in island_list:
 
 # plot_2.legend.location = 'bottom_right'
 plot_2.add_layout(plot_2.legend[0], 'left')
-plot_1.legend.label_text_font_size = "10px"
+plot_2.legend.title='Klik berdasarkan pulau'
 plot_2.legend.click_policy="hide"
+
 
 def update_plot(attr, old, new):
     yr = 2020
@@ -161,6 +163,7 @@ def update_plot(attr, old, new):
     'province'      : data.loc[yr].province,
     'pop'           : data.loc[yr].population,
     'island'        : data.loc[yr].island,
+    "date"          : data.loc[yr].date
     }
     source.data = new_data
     
