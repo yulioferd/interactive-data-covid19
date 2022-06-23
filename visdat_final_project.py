@@ -131,10 +131,15 @@ def update_plot(attr, old, new):
     # Add title to figure: plot.title.text
     plot.title.text = 'Covid-19 data pulau %d' % x_island
 
+data.index.to_list()
+
+island_unq = data.index.unique()
+
+is_list = island_unq.to_list()
 # Make dropdown menu for x and y axis
 # Create a dropdown Select widget for the x data: x_select
 select_island = Select(
-    options=island_list,
+    options=is_list,
     value= 'Jawa',
     title='Pulau Indonesia'
 )
