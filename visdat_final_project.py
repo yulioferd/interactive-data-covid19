@@ -100,25 +100,30 @@ source = ColumnDataSource(data={
 })
 
 # Create the figure: plot
-plot = figure(title='Covid-19 Indonesia', x_axis_label='Date', y_axis_label='Total Kasus',
+plot_1 = figure(title='Covid-19 Indonesia', x_axis_label='Date', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='@x|@y|@province')])
 
-# plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
-#            color=dict(field='island', transform=color_mapper), legend='island')
+plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
+           color=dict(field='island', transform=color_mapper), legend='island')
+
+plot_1.legend.location = 'top_left'
+
+# Create the figure: plot
+plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Kasus Baru dan Total Kasus setiap pulau', x_axis_label='Kasus Baru', y_axis_label='Total Kasus',
+           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kasus @y')])
 
 colors = ['#440154', '#404387', '#29788E', '#22A784', '#79D151', '#FD0724','#37AB65', '#7C60A8', '#CF95D7', '#F6CC1D','#3DF735', '#AD6D70']
 color_id =0
-
 for reg in island_list:
     
-    date = data.loc[data.island == reg ,'date']
+    date = data.loc[data.island == reg ,'new_cases']
     total_cases = data.loc[data.island == reg ,'total_cases']
-    plot.circle(date,total_cases ,color= colors[color_id] , alpha=0.8, line_width=4,legend=reg ) 
+    plot_2.circle(date,total_cases ,color= colors[color_id] , alpha=0.8, line_width=4,legend=reg ) 
     
     color_id = color_id + 1
 
-plot.legend.location = 'top_left'
-plot.legend.click_policy="hide"
+plot_2.legend.location = 'bottom_right'
+plot_2.legend.click_policy="hide"
 
 def update_plot(attr, old, new):
     # set the `yr` name to `slider.value` and `source.data = new_data`
@@ -126,21 +131,21 @@ def update_plot(attr, old, new):
     x = x_select.value
     y = y_select.value
     # Label axes of plot
-    plot.xaxis.axis_label = x
-    plot.yaxis.axis_label = y
+    plot_1.xaxis.axis_label = x
+    plot_1.yaxis.axis_label = y
     # new data
     new_data = {
     'x'             : data.loc[yr][x],
     'y'             : data.loc[yr][y],
     'province'      : data.loc[yr].province,
     'pop'           : data.loc[yr].population,
-    'island'        : data.loc[yr].island,
+    'island'        : data.loc[yr].island_unique,
 
     }
     source.data = new_data
     
     # Add title to figure: plot.title.text
-    plot.title.text = 'Covid-19 data pulau %d' % yr
+    plot_1.title.text = 'Covid-19 data pulau %d' % yr
 
 # slider = Slider(start=1970, end=2022, step=1, value=2020, title='Year')
 # slider.on_change('value',update_plot)
@@ -183,7 +188,11 @@ y_select = Select(
 y_select.on_change('value', update_plot)
 
 # Create layout and add to current document
-layout = row(widgetbox(x_select, y_select), plot)
+layout = row(widgetbox(x_select, y_select), plot_1)
 curdoc().add_root(layout)
+
+# Create layout and add to current document
+layout_2 =  plot_2
+curdoc().add_root(layout_2)
 
 # show(layout)
