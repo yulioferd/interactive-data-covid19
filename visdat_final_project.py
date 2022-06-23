@@ -112,14 +112,15 @@ def update_plot(attr, old, new):
     # set the `yr` name to `slider.value` and `source.data = new_data`
     # yr = slider.value
     x_island = select_island.value
-    # y = y_select.value
+    x = x_select.value
+    y = y_select.value
     # Label axes of plot
-    plot.xaxis.axis_label = 'x'
-    plot.yaxis.axis_label = 'y'
+    plot.xaxis.axis_label = x
+    plot.yaxis.axis_label = y
     # new data
     new_data = {
-    'x'             : data.loc[x_island].date,
-    'y'             : data.loc[x_island].total_cases,
+    'x'             : data.loc[x_island][x],
+    'y'             : data.loc[x_island][y],
     'province'      : data.loc[x_island].province,
     'pop'           : data.loc[x_island].population,
     'island'        : data.loc[x_island].island,
@@ -141,17 +142,27 @@ select_island = Select(
 # Attach the update_plot callback to the 'value' property of x_select
 select_island.on_change('value', update_plot)
 
-# y_select = Select(
-#     options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
-#     value='total_cases',
-#     title='y-axis data'
-# )
+# Make dropdown menu for x and y axis
+# Create a dropdown Select widget for the x data: x_select
+x_select = Select(
+    options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
+    value='total_cases',
+    title='x-axis data'
+)
+
+x_select.on_change('value', update_plot)
+
+y_select = Select(
+    options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
+    value='total_cases',
+    title='y-axis data'
+)
 
 # Attach the update_plot callback to the 'value' property of y_select
-# y_select.on_change('value', update_plot)
+y_select.on_change('value', update_plot)
 
 # Create layout and add to current document
-layout = row(widgetbox(select_island), plot)
+layout = row(widgetbox(select_island, x_select, y_select), plot)
 curdoc().add_root(layout)
 
 # show(layout)
