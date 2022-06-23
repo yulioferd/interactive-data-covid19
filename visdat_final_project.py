@@ -60,7 +60,7 @@ data = data.rename(columns={'Date': 'date',
                         'Growth Factor of New Cases': 'growth_factor_of_new_cases', 
                         'Growth Factor of New Deaths': 'growth_factor_of_new_deaths'})
 
-# data['date'] = pd.to_datetime(data['date'])
+data['date'] = pd.to_datetime(data['date'])
 
 data['year'] = 2020
 
@@ -82,13 +82,13 @@ data.info()
 data
 
 # Make a list of the unique values from the region column: regions_list
-province_list = data.province.unique().tolist()
+# province_list = data.province.unique().tolist()
 
-# island_list = data.island_unique.unique().tolist()
+island_list = data.island.unique().tolist()
 
 # island_list
 
-color_mapper = CategoricalColorMapper(factors=province_list, palette=Colorblind8)
+color_mapper = CategoricalColorMapper(factors=island_list, palette=Colorblind8)
 
 source = ColumnDataSource(data={
     # 'x'       : data.loc[1970].fertility,
