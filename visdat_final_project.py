@@ -127,7 +127,7 @@ plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
 
 plot_1.add_layout(plot_1.legend[0], 'right')
 
-plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Kasus Baru dan Total Kasus setiap pulau', x_axis_label='Kasus Baru', y_axis_label='Total Kasus',
+plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Total Kematian dan Total Kasus setiap pulau', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kasus @y')])
 
 colors = ['#440154', '#404387', '#29788E', '#22A784', '#79D151', '#FD0724','#37AB65', '#7C60A8', '#CF95D7', '#F6CC1D','#3DF735', '#AD6D70']
@@ -178,8 +178,10 @@ y_select = Select(
 y_select.on_change('value', update_plot)
 
 
-layout_2 =  plot_2
-curdoc().add_root(layout_2)
 
 layout = row(widgetbox(x_select, y_select), plot_1)
 curdoc().add_root(layout)
+
+
+layout_2 =  plot_2
+curdoc().add_root(layout_2)
