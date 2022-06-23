@@ -126,6 +126,7 @@ plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
            color=dict(field='province', transform=color_mapper_2), legend='province')
 
 plot_1.add_layout(plot_1.legend[0], 'right')
+plot_1.legend.label_text_font_size = "5px"
 
 plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Total Kematian dan Total Kasus setiap pulau', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kasus @y')])
