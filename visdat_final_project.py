@@ -9,15 +9,34 @@ Original file is located at
 ### LIBRARIES
 """
 
+import os
+import numpy as np
 import pandas as pd
-from bokeh.io import curdoc
+import random
+import seaborn as sns
+
+import datetime as datetime
+import matplotlib.dates as dates
+import matplotlib.pyplot as plt
+import plotly.express as px
+import plotly.graph_objs as go
+
+import pandas as pd
+from bokeh.io import curdoc,show,output_file,show,output_notebook,push_notebook
 from bokeh.plotting import figure
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import CategoricalColorMapper
-from bokeh.palettes import Spectral6
+from bokeh.palettes import Spectral6,Viridis10,Colorblind8
 from bokeh.layouts import widgetbox, row, gridplot
 from bokeh.models import Slider, Select
-from bokeh.io import show
+from bokeh.io import output_notebook
+
+from bokeh.io import output_file,show,output_notebook,push_notebook
+from bokeh.plotting import *
+from bokeh.models import ColumnDataSource,HoverTool,CategoricalColorMapper
+from bokeh.layouts import row,column,gridplot,widgetbox
+from bokeh.models.widgets import Tabs,Panel
+output_notebook()
 
 data = pd.read_csv("covid_19_indonesia_time_series_all.csv")
 data.info()
@@ -63,17 +82,18 @@ data = data.rename(columns={'Date': 'date',
 
 data['date'] = pd.to_datetime(data['date'])
 
-data["DateString"] = data["date"].dt.strftime("%Y%m%d")
+data["island_unique"] = data["island"]
 
 data['DateString'] = data['DateString'].astype(float)
 
 data.head()
 
-data.set_index('DateString', inplace=True)
+data.set_index('island', inplace=True)
 
 data.info()
 
-data = data.loc[:,['date','location','total_cases','total_deaths','province','population','island','continent','new_cases','new_deaths','total_active_cases']]
+data = data.loc[:,['date','location','total_cases','total_deaths','province','population','island_unique','continent','new_cases','new_deaths','total_active_cases']]
+
 data.head()
 
 data.dropna(how="any",inplace = True)
@@ -83,78 +103,64 @@ data
 
 # Make a list of the unique values from the region column: regions_list
 province_list = data.province.unique().tolist()
-island_list = data.island.unique().tolist()
 
+island_list = data.island_unique.unique().tolist()
 
-color_mapper = CategoricalColorMapper(factors=province_list, palette=Spectral6)
+island_list
+
+color_mapper = CategoricalColorMapper(factors=province_list, palette=Colorblind8)
 
 source = ColumnDataSource(data={
-    'x'    : data[data['island'] == 'Jawa'].date,
-    "y"     : data[data['island'] == 'Jawa'].total_cases,
-    "province" : data[data['island'] == 'Jawa'].province,
-    "pop" : data[data['island'] == 'Jawa'].population,
-    "island" : data[data['island'] == 'Jawa'].island,
+    # 'x'       : data.loc[1970].fertility,
+    "x"                : data.loc['Jawa'].date,
+    "y"                : data.loc['Jawa'].total_cases,
+    "province"         : data.loc['Jawa'].province,
+    "pop"              : data.loc['Jawa'].population,
+    "island"           : data.loc['Jawa'].island_unique,
 })
 
-# source = ColumnDataSource(data={
-#     'x'       : data.loc[20200301.0].total_cases,
-#     'y'       : data.loc[20200301.0].total_deaths,
-#     'location' : data.loc[20200301.0].location,
-#     'pop'     : data.loc[20200301.0].population,
-#     'islands'  : data.loc[20200301.0].island,
-# })
-
-# Create the figure: plotFertility (children per woman)
+# Create the figure: plot
 plot = figure(title='Covid-19 Indonesia', x_axis_label='Date', y_axis_label='Total Kasus',
-           plot_height=700, plot_width=1000, tools=[HoverTool(tooltips='@y')])
+           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='@y')])
 
-# Add a circle glyph to the figure p
 plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
            color=dict(field='province', transform=color_mapper), legend='province')
 
-# Set the legend and axis attributes
 plot.legend.location = 'top_left'
 
-# Define the callback function: update_plot
 def update_plot(attr, old, new):
     # set the `yr` name to `slider.value` and `source.data = new_data`
     # yr = slider.value
     x_island = select_island.value
-    x = 'x'
-    y = 'y'
+    # y = y_select.value
     # Label axes of plot
-    plot.xaxis.axis_label = x
-    plot.yaxis.axis_label = y
+    plot.xaxis.axis_label = 'x'
+    plot.yaxis.axis_label = 'y'
     # new data
     new_data = {
-    'x'             : data.loc[data['island'] == x_island].date,
-    'y'             : data.loc[data['island'] == x_island].total_cases,
-    'province'      : data.loc[data['island'] == x_island].province,
-    'pop'           : data.loc[data['island'] == x_island].population,
-    'island'        : data.loc[data['island'] == x_island].island,
+    'x'             : data.loc[x_island].date,
+    'y'             : data.loc[x_island].total_cases,
+    'province'      : data.loc[x_island].province,
+    'pop'           : data.loc[x_island].population,
+    'island'        : data.loc[x_island].island,
 
     }
     source.data = new_data
     
     # Add title to figure: plot.title.text
-    plot.title.text = 'Covid-19 data' % x_island
-
-# Make a slider object: slider
-# slider = Slider(start=1970, end=2022, step=1, value=1970, title='Year')
-# slider.on_change('value',update_plot)
+    plot.title.text = 'Covid-19 data pulau %d' % x_island
 
 # Make dropdown menu for x and y axis
 # Create a dropdown Select widget for the x data: x_select
 select_island = Select(
     options=island_list,
-    value='Jawa',
+    value= 'Jawa',
     title='Pulau Indonesia'
 )
 
 # Attach the update_plot callback to the 'value' property of x_select
 select_island.on_change('value', update_plot)
 
-# Create a dropdown Select widget for the y data: y_select
 # y_select = Select(
 #     options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
 #     value='total_cases',
@@ -168,12 +174,4 @@ select_island.on_change('value', update_plot)
 layout = row(widgetbox(select_island), plot)
 curdoc().add_root(layout)
 
-# from bokeh.io import show
-# from bokeh.models import CustomJS, Dropdown
-
-# menu = [("Total Cases", "total_cases"), ("Total Deaths", "total_deaths")]
-
-# dropdown = Dropdown(label="Dropdown button", button_type="warning", menu=menu)
-# dropdown.js_on_event("menu_item_click", CustomJS(code="console.log('dropdown: ' + this.item, this.toString())"))
-
-# show(dropdown)
+show(layout)
