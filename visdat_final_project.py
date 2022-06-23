@@ -138,8 +138,10 @@ island_unq = data.index.unique()
 is_list = island_unq.to_list()
 # Make dropdown menu for x and y axis
 # Create a dropdown Select widget for the x data: x_select
+# Make dropdown menu for x and y axis
+# Create a dropdown Select widget for the x data: x_select
 select_island = Select(
-    options=is_list,
+    options= [island_unq[0],island_unq[1],island_unq[2],island_unq[3],island_unq[4],island_unq[5],island_unq[6]],
     value= 'Jawa',
     title='Pulau Indonesia'
 )
