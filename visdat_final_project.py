@@ -119,8 +119,8 @@ source = ColumnDataSource(data={
     "island"           : data.loc[2020].island,
 })
 
-plot_1 = figure(title='Covid-19 Indonesia', x_axis_label='Date', y_axis_label='Total Kasus',
-           plot_height=400, plot_width=1000, tools=[HoverTool(tooltips='@x|@y|@province')])
+plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_axis_label='Total Kematia', y_axis_label='Total Kasus',
+           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kematian @x| Total Kasus @y | @province' )])
 
 plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
            color=dict(field='province', transform=color_mapper_2), legend='province')
@@ -144,25 +144,20 @@ plot_2.legend.location = 'bottom_right'
 plot_2.legend.click_policy="hide"
 
 def update_plot(attr, old, new):
-    # set the `yr` name to `slider.value` and `source.data = new_data`
     yr = 2020
     x = x_select.value
     y = y_select.value
-    # Label axes of plot
     plot_1.xaxis.axis_label = x
     plot_1.yaxis.axis_label = y
-    # new data
     new_data = {
     'x'             : data.loc[yr][x],
     'y'             : data.loc[yr][y],
     'province'      : data.loc[yr].province,
     'pop'           : data.loc[yr].population,
     'island'        : data.loc[yr].island_unique,
-
     }
     source.data = new_data
     
-    # Add title to figure: plot.title.text
     plot_1.title.text = 'Covid-19 data pulau %d' % yr
 
 
