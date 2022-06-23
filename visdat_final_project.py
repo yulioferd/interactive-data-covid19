@@ -64,34 +64,17 @@ data['date'] = pd.to_datetime(data['date'])
 
 data['year'] = 2020
 
-# data['DateString'] = data['DateString'].astype(float)
-
-data.head()
-
 data.set_index('year', inplace=True)
-
-data.info()
 
 data = data.loc[:,['date','location','total_cases','total_deaths','province','population','island','continent','new_cases','new_deaths','total_active_cases']]
 
-data.head()
-
 data.dropna(how="any",inplace = True)
-data.info()
-
-data
-
-# Make a list of the unique values from the region column: regions_list
-# province_list = data.province.unique().tolist()
 
 island_list = data.island.unique().tolist()
-
-# island_list
 
 color_mapper = CategoricalColorMapper(factors=island_list, palette=Colorblind8)
 
 source = ColumnDataSource(data={
-    # 'x'       : data.loc[1970].fertility,
     "x"                : data.loc[2020].date,
     "y"                : data.loc[2020].total_cases,
     "province"         : data.loc[2020].province,
@@ -99,7 +82,6 @@ source = ColumnDataSource(data={
     "island"           : data.loc[2020].island,
 })
 
-# Create the figure: plot
 plot_1 = figure(title='Covid-19 Indonesia', x_axis_label='Date', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='@x|@y|@province')])
 
@@ -108,7 +90,6 @@ plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
 
 plot_1.legend.location = 'top_left'
 
-# Create the figure: plot
 plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Kasus Baru dan Total Kasus setiap pulau', x_axis_label='Kasus Baru', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kasus @y')])
 
@@ -126,14 +107,11 @@ plot_2.legend.location = 'bottom_right'
 plot_2.legend.click_policy="hide"
 
 def update_plot(attr, old, new):
-    # set the `yr` name to `slider.value` and `source.data = new_data`
     yr = 2020
     x = x_select.value
     y = y_select.value
-    # Label axes of plot
     plot_1.xaxis.axis_label = x
     plot_1.yaxis.axis_label = y
-    # new data
     new_data = {
     'x'             : data.loc[yr][x],
     'y'             : data.loc[yr][y],
@@ -144,32 +122,8 @@ def update_plot(attr, old, new):
     }
     source.data = new_data
     
-    # Add title to figure: plot.title.text
     plot_1.title.text = 'Covid-19 data pulau %d' % yr
 
-# slider = Slider(start=1970, end=2022, step=1, value=2020, title='Year')
-# slider.on_change('value',update_plot)
-
-# data.index.to_list()
-
-# island_unq = data.index.unique()
-
-# is_list = island_unq.to_list()
-# Make dropdown menu for x and y axis
-# Create a dropdown Select widget for the x data: x_select
-# Make dropdown menu for x and y axis
-# Create a dropdown Select widget for the x data: x_select
-# select_island = Select(
-#     options= [island_unq[0],island_unq[1],island_unq[2],island_unq[3],island_unq[4],island_unq[5],island_unq[6]],
-#     value= 'Jawa',
-#     title='Pulau Indonesia'
-# )
-
-# Attach the update_plot callback to the 'value' property of x_select
-# select_island.on_change('value', update_plot)
-
-# Make dropdown menu for x and y axis
-# Create a dropdown Select widget for the x data: x_select
 x_select = Select(
     options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
     value='total_cases',
