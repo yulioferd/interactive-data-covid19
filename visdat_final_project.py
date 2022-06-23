@@ -120,9 +120,11 @@ def update_plot(attr, old, new):
     # set the `yr` name to `slider.value` and `source.data = new_data`
     # yr = slider.value
     x_island = select_island.value
+    x = 'x'
+    y = 'y'
     # Label axes of plot
-    plot.xaxis.axis_label = 'x'
-    plot.yaxis.axis_label = 'y'
+    plot.xaxis.axis_label = x
+    plot.yaxis.axis_label = y
     # new data
     new_data = {
     'x'             : data.loc[data['island'] == x_island].date,
