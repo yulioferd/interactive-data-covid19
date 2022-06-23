@@ -60,7 +60,7 @@ data = data.rename(columns={'Date': 'date',
                         'Growth Factor of New Cases': 'growth_factor_of_new_cases', 
                         'Growth Factor of New Deaths': 'growth_factor_of_new_deaths'})
 
-data['date'] = pd.to_datetime(data['date'])
+# data['date'] = pd.to_datetime(data['date'])
 
 data['year'] = 2020
 
