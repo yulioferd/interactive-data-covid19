@@ -129,7 +129,7 @@ plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
 # plot_1.legend.label_text_font_size = "5px"
 
 plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Total Kematian dan Total Kasus setiap pulau', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
-           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kasus @y')])
+           plot_height=400, plot_width=1000, tools=[HoverTool(tooltips='Total Kasus @y')])
 
 
 # plot_1.legend.label_text_font_size = "5px"
@@ -146,6 +146,7 @@ for reg in island_list:
 
 # plot_2.legend.location = 'bottom_right'
 plot_2.add_layout(plot_2.legend[0], 'left')
+plot_1.legend.label_text_font_size = "10px"
 plot_2.legend.click_policy="hide"
 
 def update_plot(attr, old, new):
