@@ -119,7 +119,7 @@ source = ColumnDataSource(data={
     "island"           : data.loc[2020].island,
 })
 
-plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_axis_label='Kematian Baru', y_axis_label='Kasus Baru',
+plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Axis X @x | Axis Y @y | @province' )])
 
 plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
