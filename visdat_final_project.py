@@ -112,7 +112,7 @@ color_mapper_2 = CategoricalColorMapper(factors=province_list,
                                                '#F6CC1D'])
 
 source = ColumnDataSource(data={
-    "x"                : data.loc[2020].total_death,
+    "x"                : data.loc[2020].total_deaths,
     "y"                : data.loc[2020].total_cases,
     "province"         : data.loc[2020].province,
     "pop"              : data.loc[2020].population,
