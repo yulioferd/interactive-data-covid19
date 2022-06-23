@@ -125,8 +125,8 @@ plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_ax
 plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
            color=dict(field='province', transform=color_mapper_2), legend='province')
 
-plot_1.add_layout(plot_1.legend[0], 'right')
-plot_1.legend.label_text_font_size = "5px"
+# plot_1.add_layout(plot_1.legend[0], 'right')
+# plot_1.legend.label_text_font_size = "5px"
 
 plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Total Kematian dan Total Kasus setiap pulau', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kasus @y')])
@@ -155,7 +155,7 @@ def update_plot(attr, old, new):
     'y'             : data.loc[yr][y],
     'province'      : data.loc[yr].province,
     'pop'           : data.loc[yr].population,
-    'island'        : data.loc[yr].island_unique,
+    'island'        : data.loc[yr].island,
     }
     source.data = new_data
     
@@ -177,8 +177,6 @@ y_select = Select(
 )
 
 y_select.on_change('value', update_plot)
-
-
 
 layout = row(widgetbox(x_select, y_select), plot_1)
 curdoc().add_root(layout)
