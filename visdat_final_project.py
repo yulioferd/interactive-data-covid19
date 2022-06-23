@@ -103,10 +103,22 @@ source = ColumnDataSource(data={
 plot = figure(title='Covid-19 Indonesia', x_axis_label='Date', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='@x|@y|@province')])
 
-plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
-           color=dict(field='island', transform=color_mapper), legend='island')
+# plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
+#            color=dict(field='island', transform=color_mapper), legend='island')
+
+colors = ['#440154', '#404387', '#29788E', '#22A784', '#79D151', '#FD0724','#37AB65', '#7C60A8', '#CF95D7', '#F6CC1D','#3DF735', '#AD6D70']
+color_id =0
+
+for reg in island_list:
+    
+    date = data.loc[data.island == reg ,'date']
+    total_cases = data.loc[data.island == reg ,'total_cases']
+    plot.circle(date,total_cases ,color= colors[color_id] , alpha=0.8, line_width=4,legend=reg ) 
+    
+    color_id = color_id + 1
 
 plot.legend.location = 'top_left'
+plot.legend.click_policy="hide"
 
 def update_plot(attr, old, new):
     # set the `yr` name to `slider.value` and `source.data = new_data`
