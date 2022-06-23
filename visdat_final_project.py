@@ -62,17 +62,17 @@ data = data.rename(columns={'Date': 'date',
 
 data['date'] = pd.to_datetime(data['date'])
 
-data["island_unique"] = data["island"]
+data['year'] = 2020
 
 # data['DateString'] = data['DateString'].astype(float)
 
 data.head()
 
-data.set_index('island', inplace=True)
+data.set_index('year', inplace=True)
 
 data.info()
 
-data = data.loc[:,['date','location','total_cases','total_deaths','province','population','island_unique','continent','new_cases','new_deaths','total_active_cases']]
+data = data.loc[:,['date','location','total_cases','total_deaths','province','population','island','continent','new_cases','new_deaths','total_active_cases']]
 
 data.head()
 
@@ -84,19 +84,19 @@ data
 # Make a list of the unique values from the region column: regions_list
 province_list = data.province.unique().tolist()
 
-island_list = data.island_unique.unique().tolist()
+# island_list = data.island_unique.unique().tolist()
 
-island_list
+# island_list
 
 color_mapper = CategoricalColorMapper(factors=province_list, palette=Colorblind8)
 
 source = ColumnDataSource(data={
     # 'x'       : data.loc[1970].fertility,
-    "x"                : data.loc['Jawa'].date,
-    "y"                : data.loc['Jawa'].total_cases,
-    "province"         : data.loc['Jawa'].province,
-    "pop"              : data.loc['Jawa'].population,
-    "island"           : data.loc['Jawa'].island_unique,
+    "x"                : data.loc[2020].date,
+    "y"                : data.loc[2020].total_cases,
+    "province"         : data.loc[2020].province,
+    "pop"              : data.loc[2020].population,
+    "island"           : data.loc[2020].island,
 })
 
 # Create the figure: plot
@@ -110,8 +110,7 @@ plot.legend.location = 'top_left'
 
 def update_plot(attr, old, new):
     # set the `yr` name to `slider.value` and `source.data = new_data`
-    # yr = slider.value
-    x_island = select_island.value
+    yr = slider.value
     x = x_select.value
     y = y_select.value
     # Label axes of plot
@@ -119,35 +118,38 @@ def update_plot(attr, old, new):
     plot.yaxis.axis_label = y
     # new data
     new_data = {
-    'x'             : data.loc[x_island][x],
-    'y'             : data.loc[x_island][y],
-    'province'      : data.loc[x_island].province,
-    'pop'           : data.loc[x_island].population,
-    'island'        : data.loc[x_island].island_unique,
+    'x'             : data.loc[yr][x],
+    'y'             : data.loc[yr][y],
+    'province'      : data.loc[yr].province,
+    'pop'           : data.loc[yr].population,
+    'island'        : data.loc[yr].island_unique,
 
     }
     source.data = new_data
     
     # Add title to figure: plot.title.text
-    plot.title.text = 'Covid-19 data pulau %d' % x_island
+    plot.title.text = 'Covid-19 data pulau %d' % yr
 
-data.index.to_list()
+slider = Slider(start=1970, end=2022, step=1, value=2020, title='Year')
+slider.on_change('value',update_plot)
 
-island_unq = data.index.unique()
+# data.index.to_list()
 
-is_list = island_unq.to_list()
+# island_unq = data.index.unique()
+
+# is_list = island_unq.to_list()
 # Make dropdown menu for x and y axis
 # Create a dropdown Select widget for the x data: x_select
 # Make dropdown menu for x and y axis
 # Create a dropdown Select widget for the x data: x_select
-select_island = Select(
-    options= [island_unq[0],island_unq[1],island_unq[2],island_unq[3],island_unq[4],island_unq[5],island_unq[6]],
-    value= 'Jawa',
-    title='Pulau Indonesia'
-)
+# select_island = Select(
+#     options= [island_unq[0],island_unq[1],island_unq[2],island_unq[3],island_unq[4],island_unq[5],island_unq[6]],
+#     value= 'Jawa',
+#     title='Pulau Indonesia'
+# )
 
 # Attach the update_plot callback to the 'value' property of x_select
-select_island.on_change('value', update_plot)
+# select_island.on_change('value', update_plot)
 
 # Make dropdown menu for x and y axis
 # Create a dropdown Select widget for the x data: x_select
@@ -169,7 +171,7 @@ y_select = Select(
 y_select.on_change('value', update_plot)
 
 # Create layout and add to current document
-layout = row(widgetbox(select_island, x_select, y_select), plot)
+layout = row(widgetbox(slider, x_select, y_select), plot)
 curdoc().add_root(layout)
 
 # show(layout)
