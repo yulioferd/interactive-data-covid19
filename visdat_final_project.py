@@ -131,6 +131,9 @@ plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
 plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Total Kematian dan Total Kasus setiap pulau', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Total Kasus @y')])
 
+
+# plot_1.legend.label_text_font_size = "5px"
+
 colors = ['#440154', '#404387', '#29788E', '#22A784', '#79D151', '#FD0724','#37AB65', '#7C60A8', '#CF95D7', '#F6CC1D','#3DF735', '#AD6D70']
 color_id =0
 for reg in island_list:
@@ -141,7 +144,8 @@ for reg in island_list:
     
     color_id = color_id + 1
 
-plot_2.legend.location = 'bottom_right'
+# plot_2.legend.location = 'bottom_right'
+plot_2.add_layout(plot_2.legend[0], 'left')
 plot_2.legend.click_policy="hide"
 
 def update_plot(attr, old, new):
