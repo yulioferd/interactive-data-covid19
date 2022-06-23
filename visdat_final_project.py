@@ -101,7 +101,7 @@ source = ColumnDataSource(data={
 
 # Create the figure: plot
 plot = figure(title='Covid-19 Indonesia', x_axis_label='Date', y_axis_label='Total Kasus',
-           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='@y')])
+           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='@x|@y|@province')])
 
 plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
            color=dict(field='island', transform=color_mapper), legend='island')
