@@ -59,7 +59,7 @@ data = data.rename(columns={'Date': 'date',
                         'Growth Factor of New Cases': 'growth_factor_of_new_cases', 
                         'Growth Factor of New Deaths': 'growth_factor_of_new_deaths'})
 
-data['date'] = pd.to_datetime(data['date'])
+# data['date'] = pd.to_datetime(data['date'])
 
 data['year'] = 2020
 
@@ -112,8 +112,8 @@ color_mapper_2 = CategoricalColorMapper(factors=province_list,
                                                '#F6CC1D'])
 
 source = ColumnDataSource(data={
-    "x"                : data.loc[2020].new_deaths,
-    "y"                : data.loc[2020].new_cases,
+    "x"                : data.loc[2020].total_deaths,
+    "y"                : data.loc[2020].total_cases,
     "province"         : data.loc[2020].province,
     "pop"              : data.loc[2020].population,
     "island"           : data.loc[2020].island,
@@ -121,7 +121,7 @@ source = ColumnDataSource(data={
 })
 
 plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_axis_label='Kematian Baru', y_axis_label='Kasus Baru',
-           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Kematian Baru @x | Kasus Baru @y | @province' )])
+           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Axis X @x | Axis Y @y | @province' )])
 
 plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
            color=dict(field='province', transform=color_mapper_2))
