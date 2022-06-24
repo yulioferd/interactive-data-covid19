@@ -17,9 +17,12 @@ from bokeh.palettes import Colorblind8
 from bokeh.layouts import widgetbox, row
 from bokeh.models import  Select
 
+# read data
 data = pd.read_csv("covid_19_indonesia_time_series_all.csv")
 data.info()
 
+
+# ubah penamaan setiap kolom
 data = data.rename(columns={'Date': 'date', 
                         'Location ISO Code': 'location_iso_code', 
                         'Location': 'location', 
@@ -61,20 +64,27 @@ data = data.rename(columns={'Date': 'date',
 
 # data['date'] = pd.to_datetime(data['date'])
 
+# buat kolom baru dengan nama kolom year di isi value dengan 2020
 data['year'] = 2020
 
+# set index berdasarkan year
 data.set_index('year', inplace=True)
 
+# pilih kolom2 yang hanya dipakai saja
 data = data.loc[:,['date','location','total_cases','total_deaths','island','province','population','continent','new_cases','new_deaths','total_active_cases']]
 
 data.dropna(how="any",inplace = True)
 
+# buat list provinsi menjadi data unique
 province_list = data.province.unique().tolist()
 
+# buat list island menjadi data unique
 island_list = data.island.unique().tolist()
 
+# buat coloring untuk plot kedua
 color_mapper = CategoricalColorMapper(factors=island_list, palette=Colorblind8)
 
+# buat coloring untuk plot pertama 
 color_mapper_2 = CategoricalColorMapper(factors=province_list, 
                                       palette=['#440154', 
                                                '#404387', 
@@ -111,6 +121,7 @@ color_mapper_2 = CategoricalColorMapper(factors=province_list,
                                                '#CF95D7', 
                                                '#F6CC1D'])
 
+# buat data awal yang akan ditampilkan
 source = ColumnDataSource(data={
     "x"                : data.loc[2020].total_deaths,
     "y"                : data.loc[2020].total_cases,
@@ -119,6 +130,7 @@ source = ColumnDataSource(data={
     "island"           : data.loc[2020].island,
 })
 
+# membuat plot pertama
 plot_1 = figure(title='Persebaran Covid-19 dengan data Kasus dan Kematian', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
            plot_height=400, plot_width=700, tools=[HoverTool(tooltips='Axis X @x | Axis Y @y | @province' )])
 
@@ -128,12 +140,14 @@ plot_1.circle(x='x', y='y', source=source, fill_alpha=0.8,
 # plot_1.add_layout(plot_1.legend[0], 'right')
 # plot_1.legend.label_text_font_size = "5px"
 
+# membuat plot kedua
 plot_2 = figure(title='Persebaran Covid-19 Indonesia berdasarkan Total Kematian dan Total Kasus setiap pulau', x_axis_label='Total Kematian', y_axis_label='Total Kasus',
            plot_height=400, plot_width=1000, tools=[HoverTool(tooltips='Total Kasus @y')])
 
 
 # plot_1.legend.label_text_font_size = "5px"
 
+# memberi warna di pulau pulau
 colors = ['#440154', '#404387', '#29788E', '#22A784', '#79D151', '#FD0724','#37AB65', '#7C60A8', '#CF95D7', '#F6CC1D','#3DF735', '#AD6D70']
 color_id =0
 for reg in island_list:
@@ -150,6 +164,7 @@ plot_2.legend.title='Klik berdasarkan pulau'
 plot_2.legend.click_policy="hide"
 
 
+# fungsi update plot
 def update_plot(attr, old, new):
     yr = 2020
     x = x_select.value
@@ -167,7 +182,7 @@ def update_plot(attr, old, new):
     
     plot_1.title.text = 'Covid-19 data provinsi %d' % yr
 
-
+# fungsi dropdown X
 x_select = Select(
     options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
     value='total_cases',
@@ -176,6 +191,7 @@ x_select = Select(
 
 x_select.on_change('value', update_plot)
 
+# fungsi dropdown Y
 y_select = Select(
     options=['total_deaths', 'total_cases', 'new_cases', 'new_deaths'],
     value='total_cases',
@@ -184,9 +200,11 @@ y_select = Select(
 
 y_select.on_change('value', update_plot)
 
+
+# Berdasarkan total kasus dan total kematian informasi yang didapatkan 4 provinsi tertinggi Jawa Tengah, Jawa Barat, Jawa Timur dan DKI Jakarta
 layout = row(widgetbox(x_select, y_select), plot_1)
 curdoc().add_root(layout)
 
-
+# Berdasarkan total kasus dan total kematian informasi yang didapatkan pulau jawa memiliki persebaran data yang signnifikan
 layout_2 =  plot_2
 curdoc().add_root(layout_2)
